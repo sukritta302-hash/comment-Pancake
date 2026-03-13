@@ -37,7 +37,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* Star Rating Styles */
+        /* Star Rating CSS */
         .star-rating {
             display: flex;
             flex-direction: row-reverse;
@@ -46,21 +46,20 @@
         .star-rating input { display: none; }
         .star-rating label {
             cursor: pointer;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23d1d5db'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.07 6.323a1 1 0 00.95.69h6.642c.969 0 1.371 1.24.588 1.81l-5.374 3.882a1 1 0 00-.364 1.118l2.07 6.323c.3.921-.755 1.688-1.54 1.118l-5.374-3.882a1 1 0 00-1.175 0l-5.374 3.882c-.785.57-1.838-.197-1.539-1.118l2.07-6.323a1 1 0 00-.364-1.118L2.293 11.75c-.783-.57-.38-1.81.588-1.81h6.642a1 1 0 00.95-.69l2.07-6.323z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            transition: all 0.2s;
+            transition: transform 0.1s ease;
         }
+        .star-rating label:active { transform: scale(0.9); }
         .star-rating label:hover,
         .star-rating label:hover ~ label,
         .star-rating input:checked ~ label {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fbbf24' viewBox='0 0 24 24'%3E%3Cpath d='M11.049 2.927c.3-.921 1.603-.921 1.902 0l2.07 6.323a1 1 0 00.95.69h6.642c.969 0 1.371 1.24.588 1.81l-5.374 3.882a1 1 0 00-.364 1.118l2.07 6.323c.3.921-.755 1.688-1.54 1.118l-5.374-3.882a1 1 0 00-1.175 0l-5.374 3.882c-.785.57-1.838-.197-1.539-1.118l2.07-6.323a1 1 0 00-.364-1.118L2.293 11.75c-.783-.57-.38-1.81.588-1.81h6.642a1 1 0 00.95-.69l2.07-6.323z'/%3E%3C/svg%3E");
         }
-        
-        /* สไตล์สำหรับครึ่งดาว (ถ้าต้องการให้ละเอียดขึ้น เราจะใช้ระบบ 10 ขั้น 0.5 - 5.0) */
         input, textarea { font-size: 16px !important; }
     </style>
 </head>
@@ -73,36 +72,37 @@
                 <div class="w-8 h-8 bg-rose-600 rounded-full flex items-center justify-center shrink-0">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </div>
-                <span class="orbitron font-bold text-lg sm:text-xl text-rose-600 tracking-tighter truncate">SPACE FEST</span>
+                <span class="orbitron font-bold text-lg sm:text-xl text-rose-600 truncate uppercase">Space Fest</span>
             </div>
-            <div id="avgDisplay" class="flex items-center bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100 shadow-sm">
+            <div id="avgDisplay" class="flex items-center bg-amber-50 px-3 py-1.5 rounded-full border border-amber-100 shadow-sm">
                 <span class="text-amber-500 font-bold mr-2 text-sm">★ <span id="avgScore">0.0</span></span>
-                <span class="text-[10px] text-gray-400 orbitron uppercase font-bold tracking-tighter">AVG RATING</span>
+                <span class="text-[10px] text-amber-700 orbitron uppercase font-bold tracking-tighter">Average Rating</span>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Header Section -->
     <header class="hero-gradient text-white py-12 md:py-16 px-4 text-center">
         <div class="max-w-4xl mx-auto">
-            <h1 class="orbitron text-3xl md:text-5xl font-bold mb-4 tracking-tight leading-tight uppercase">Mission Feedback</h1>
+            <h1 class="orbitron text-3xl md:text-5xl font-bold mb-4 uppercase tracking-wider">Mission Logs</h1>
             <p class="text-rose-100 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">
-                ให้คะแนนการเดินทางและบันทึกข้อความสู่สถานี Comment-Pancake
+                ร่วมให้คะแนนและบันทึกความประทับใจของคุณสู่สถานีควบคุม <br class="hidden sm:block"> เพื่อเป็นข้อมูลในการพัฒนาภารกิจต่อไป
             </p>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 -mt-8 md:-mt-10 pb-20 flex-grow">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
             
-            <!-- Left Column: Form -->
+            <!-- Left: Entry Form -->
             <div class="lg:col-span-4">
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:sticky lg:top-24">
                     <h2 class="orbitron text-rose-600 font-bold mb-6 flex items-center text-lg uppercase">
                         Submit Entry
                     </h2>
                     <form id="commentForm" class="space-y-4">
-                        <!-- Rating Stars -->
+                        <!-- Rating Selector -->
                         <div>
                             <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Star Rating</label>
                             <div class="star-rating mb-2">
@@ -120,8 +120,8 @@
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:bg-white outline-none transition-all text-sm">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1 ml-1">Message</label>
-                            <textarea id="message" placeholder="พิมพ์ข้อความที่นี่..." required rows="4" 
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1 ml-1">Mission Report</label>
+                            <textarea id="message" placeholder="ข้อความถึงทีมงาน..." required rows="4" 
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:bg-white outline-none transition-all text-sm resize-none"></textarea>
                         </div>
                         <button type="submit" id="submitBtn" 
@@ -133,20 +133,23 @@
                 </div>
             </div>
 
-            <!-- Right Column: Results -->
+            <!-- Right: Records Display -->
             <div class="lg:col-span-8">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-2">
                     <h2 class="orbitron text-xl font-bold text-gray-800 tracking-tight uppercase">Recent Logs</h2>
-                    <span id="commentCount" class="bg-rose-100 text-rose-600 text-[10px] font-bold px-4 py-1.5 rounded-full tracking-widest uppercase">0 RECORDS</span>
+                    <span id="commentCount" class="bg-rose-100 text-rose-600 text-[10px] font-bold px-4 py-1.5 rounded-full tracking-widest uppercase">0 Records</span>
                 </div>
 
                 <div id="loading" class="bg-white rounded-2xl p-12 text-center border border-dashed border-gray-200">
                     <div class="loader mb-4"></div>
-                    <p class="text-gray-400 text-sm tracking-wide">กำลังสแกนสัญญาณ...</p>
+                    <p class="text-gray-400 text-sm font-light">กำลังเชื่อมต่อฐานข้อมูลศูนย์ควบคุม...</p>
                 </div>
 
-                <div id="commentsContainer" class="space-y-4"></div>
+                <div id="commentsContainer" class="space-y-4">
+                    <!-- Logs will appear here -->
+                </div>
             </div>
+
         </div>
     </main>
 
@@ -155,8 +158,8 @@
     </footer>
 
     <script>
-        // เปลี่ยน URL นี้เป็น URL ล่าสุดของคุณ
-        const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUgIN9Y1ukdfMXCHqJ5Bqd-mXSMMoqJS0G7CXARihd7UD2MwWbZJLuJF6BKrHUUOs6/exec';
+        // อัปเดต URL ใหม่ล่าสุดของคุณ
+        const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsOeJXcsrprUs74og9Syhw3HblHuMmug6YPP0f-8p-Pjm5DH5hREY0WpxR5jbVFAqPVQ/exec';
 
         const commentForm = document.getElementById('commentForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -165,6 +168,7 @@
         const loading = document.getElementById('loading');
         const avgScoreText = document.getElementById('avgScore');
 
+        // ฟังก์ชันดึงข้อมูลทั้งหมด
         async function fetchData() {
             try {
                 const response = await fetch(APP_SCRIPT_URL);
@@ -173,65 +177,80 @@
                 renderComments(data.comments || []);
             } catch (e) {
                 console.error("Fetch error:", e);
+                loading.innerHTML = '<div class="text-rose-500 py-10">ไม่สามารถเชื่อมต่อศูนย์ควบคุมได้</div>';
             }
         }
 
+        // ฟังก์ชันแสดงผลคอมเมนต์
         function renderComments(comments) {
             loading.style.display = 'none';
             commentsContainer.innerHTML = '';
-            document.getElementById('commentCount').innerText = `${comments.length} RECORDS`;
+            document.getElementById('commentCount').innerText = `${comments.length} Records`;
 
             if (comments.length === 0) {
-                commentsContainer.innerHTML = '<div class="bg-white rounded-2xl p-10 text-center border border-gray-100 text-gray-400 italic">ยังไม่มีสัญญาณตอบรับ...</div>';
+                commentsContainer.innerHTML = `
+                    <div class="bg-white rounded-2xl p-12 text-center border border-gray-100">
+                        <p class="text-gray-400 italic">ยังไม่มีข้อมูลการสำรวจในขณะนี้</p>
+                    </div>
+                `;
                 return;
             }
 
+            // แสดงผลจากใหม่ไปเก่า
             comments.slice().reverse().forEach(c => {
                 const stars = '★'.repeat(c.rating) + '☆'.repeat(5 - c.rating);
                 const div = document.createElement('div');
-                div.className = 'comment-card bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100';
+                div.className = 'comment-card bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow';
                 div.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 gap-1">
                         <div class="flex flex-col">
                             <span class="font-bold text-gray-800 text-base">${escapeHtml(c.name)}</span>
-                            <span class="text-amber-500 text-xs">${stars} <span class="text-gray-300 ml-1">(${c.rating})</span></span>
+                            <span class="text-amber-500 text-xs tracking-tight">${stars} <span class="text-gray-300 ml-1">(${c.rating})</span></span>
                         </div>
-                        <span class="text-[9px] orbitron text-gray-400 bg-gray-50 px-2 py-1 rounded-full border border-gray-100 self-start sm:self-center">
+                        <span class="text-[9px] orbitron text-gray-400 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-100 self-start sm:self-center">
                             ${c.timestamp}
                         </span>
                     </div>
-                    <p class="text-gray-600 text-sm leading-relaxed">${escapeHtml(c.message)}</p>
+                    <p class="text-gray-600 text-sm md:text-base font-light leading-relaxed whitespace-pre-wrap">${escapeHtml(c.message)}</p>
                 `;
                 commentsContainer.appendChild(div);
             });
         }
 
+        // ฟังก์ชันส่งข้อมูล
         commentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('name').value;
             const message = document.getElementById('message').value;
-            const rating = document.querySelector('input[name="rating"]:checked').value;
+            const ratingRadio = document.querySelector('input[name="rating"]:checked');
+            const rating = ratingRadio ? ratingRadio.value : 0;
             
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<div class="loader"></div>';
 
             try {
+                // ส่งข้อมูลผ่าน GET Query Params เพื่อเลี่ยง CORS
                 const finalUrl = `${APP_SCRIPT_URL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}&rating=${rating}`;
                 await fetch(finalUrl, { method: 'POST', mode: 'no-cors' });
 
-                statusMessage.innerText = 'บันทึกสำเร็จ!';
-                statusMessage.className = 'mt-4 text-center text-xs p-3 rounded-xl bg-green-50 text-green-700 block';
+                showStatus('บันทึกข้อมูลเรียบร้อยแล้ว!', 'bg-green-50 text-green-700 border-green-100');
                 commentForm.reset();
+                // รีโหลดข้อมูลหลังจากผ่านไป 2 วินาทีเพื่อให้ Server ประมวลผลเสร็จ
                 setTimeout(fetchData, 2000);
             } catch (err) {
-                statusMessage.innerText = 'เกิดข้อผิดพลาด';
-                statusMessage.className = 'mt-4 text-center text-xs p-3 rounded-xl bg-red-50 text-red-700 block';
+                showStatus('เกิดข้อผิดพลาดในการส่งข้อมูล', 'bg-rose-50 text-rose-700 border-rose-100');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<span>SEND LOG</span>';
-                setTimeout(() => statusMessage.classList.add('hidden'), 3000);
             }
         });
+
+        function showStatus(msg, classes) {
+            statusMessage.innerText = msg;
+            statusMessage.className = `mt-4 text-center text-xs p-3 rounded-xl block font-semibold border ${classes}`;
+            statusMessage.classList.remove('hidden');
+            setTimeout(() => statusMessage.classList.add('hidden'), 5000);
+        }
 
         function escapeHtml(t) {
             const d = document.createElement('div');
@@ -239,7 +258,9 @@
             return d.innerHTML;
         }
 
+        // เริ่มต้นดึงข้อมูลเมื่อโหลดหน้าเว็บ
         window.onload = fetchData;
+        // อัปเดตข้อมูลทุกๆ 60 วินาที
         setInterval(fetchData, 60000);
     </script>
 </body>
