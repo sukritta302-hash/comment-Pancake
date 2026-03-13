@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Festival - Guestbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --space-red: #e11d48;
+            --space-dark: #0f172a;
+        }
+        body {
+            font-family: 'Anuphan', sans-serif;
+            background-color: #ffffff;
+            color: var(--space-dark);
+        }
+        .orbitron { font-family: 'Orbitron', sans-serif; }
+        .hero-gradient { background: linear-gradient(135deg, #e11d48 0%, #9f1239 100%); }
+        .comment-card { border-left: 4px solid var(--space-red); }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--space-red);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <nav class="bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-rose-600 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </div>
+                <span class="orbitron font-bold text-xl text-rose-600">SPACE FEST</span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-gradient text-white py-16 px-4 text-center">
+        <h1 class="orbitron text-4xl md:text-5xl font-bold mb-4">GUESTBOOK</h1>
+        <p class="text-rose-100 max-w-xl mx-auto font-light">ร่วมส่งข้อความประทับใจของคุณ บันทึกสู่สถานี Comment-Pancake</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 -mt-10 pb-20">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Form Area -->
+            <div class="lg:col-span-1">
+                <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 sticky top-24">
+                    <h2 class="orbitron text-rose-600 font-bold mb-6 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path></svg>
+                        NEW ENTRY
+                    </h2>
+                    <form id="commentForm" class="space-y-4">
+                        <input type="text" id="name" placeholder="ชื่อของคุณ" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none transition-all">
+                        <textarea id="message" placeholder="ข้อความของคุณ..." required rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-rose-500 outline-none transition-all"></textarea>
+                        <button type="submit" id="submitBtn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center space-x-2">
+                            <span>ส่งข้อมูล</span>
+                        </button>
+                    </form>
+                    <div id="statusMessage" class="mt-4 text-center text-xs hidden p-3 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- List Area -->
+            <div class="lg:col-span-2">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="orbitron text-2xl font-bold text-gray-800">RECORDS</h2>
+                    <span id="commentCount" class="bg-rose-100 text-rose-600 text-[10px] font-bold px-3 py-1 rounded-full">0 LOGS</span>
+                </div>
+                <div id="loading" class="text-center py-20 text-gray-400 font-light">กำลังเชื่อมต่อฐานข้อมูล...</div>
+                <div id="commentsContainer" class="space-y-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // อัปเดตเป็น URL ใหม่ที่คุณให้มาเรียบร้อยแล้ว
+        const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyUgIN9Y1ukdfMXCHqJ5Bqd-mXSMMoqJS0G7CXARihd7UD2MwWbZJLuJF6BKrHUUOs6/exec';
+
+        const commentForm = document.getElementById('commentForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const commentsContainer = document.getElementById('commentsContainer');
+        const loading = document.getElementById('loading');
+
+        async function fetchComments() {
+            try {
+                const response = await fetch(APP_SCRIPT_URL);
+                const data = await response.json();
+                renderComments(data);
+            } catch (e) {
+                loading.innerText = 'ไม่สามารถดึงข้อมูลได้';
+            }
+        }
+
+        function renderComments(comments) {
+            loading.style.display = 'none';
+            commentsContainer.innerHTML = '';
+            document.getElementById('commentCount').innerText = `${comments.length} LOGS`;
+            comments.slice().reverse().forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment-card bg-white p-5 rounded-xl shadow-sm border border-gray-100';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-gray-800">${escapeHtml(c.name)}</span>
+                        <span class="text-[9px] orbitron text-gray-400">${c.timestamp}</span>
+                    </div>
+                    <p class="text-gray-600 text-sm font-light">${escapeHtml(c.message)}</p>
+                `;
+                commentsContainer.appendChild(div);
+            });
+        }
+
+        commentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="loader"></div>';
+
+            try {
+                // ใช้ Query Parameters เพื่อความเสถียรสูงสุดในการบันทึกข้ามโดเมน
+                const finalUrl = `${APP_SCRIPT_URL}?name=${encodeURIComponent(name)}&message=${encodeURIComponent(message)}`;
+                
+                // ใช้ mode: 'no-cors' เพื่อหลีกเลี่ยงข้อจำกัดความปลอดภัยของเบราว์เซอร์
+                await fetch(finalUrl, { method: 'POST', mode: 'no-cors' });
+
+                statusMessage.innerText = 'ส่งข้อมูลสำเร็จ!';
+                statusMessage.className = 'mt-4 text-center text-xs p-3 rounded-lg bg-green-50 text-green-700 block';
+                commentForm.reset();
+                
+                // รอสักครู่เพื่อให้ฝั่ง Google ประมวลผลก่อนโหลดข้อมูลใหม่
+                setTimeout(fetchComments, 2000);
+            } catch (err) {
+                statusMessage.innerText = 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+                statusMessage.className = 'mt-4 text-center text-xs p-3 rounded-lg bg-red-50 text-red-700 block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'ส่งข้อมูล';
+                setTimeout(() => statusMessage.classList.add('hidden'), 3000);
+            }
+        });
+
+        function escapeHtml(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        window.onload = fetchComments;
+    </script>
+</body>
+</html>
